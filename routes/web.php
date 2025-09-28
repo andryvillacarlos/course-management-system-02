@@ -1,0 +1,38 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+
+
+// Root Route
+Route::get('/',fn()=>inertia('Landing/LandingPage'));
+
+// <--- Landing Page Route --->
+
+Route::get('/home',fn()=>inertia('Landing/LandingPage')) 
+          ->name('landing.home'); // Home page route
+// About route
+Route::get('/about',fn()=>inertia('Landing/About'))
+          ->name('landing.about');
+// Course route
+Route::get('/course',fn()=>inertia('Landing/CoursePage'))
+          ->name('landing.course');
+// Contact route
+Route::get('/contact',fn()=>inertia('Landing/ContactPage'))
+          ->name('landing.contact');
+
+// <--- Admin Page Route --->
+Route::middleware(['auth','verified'])->group(function(){
+   Route::get('/dashboard',fn()=>inertia('Dashboard'))
+           ->name('admin.dashboard');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
