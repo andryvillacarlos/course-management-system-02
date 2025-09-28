@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 import React from "react";
 import { GraduationCap } from "lucide-react";
 import { motion } from "framer-motion"; // animation
-
+import { landingRouteNames } from "@/Config/routeConfig";
 const HeroSection = () => {
   return (
     <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
@@ -39,7 +39,7 @@ const HeroSection = () => {
           viewport={{ once: true }}
         >
           <Link
-            href="/student/register"
+            href={route(landingRouteNames.registerPage)}
             className="inline-flex items-center gap-2 bg-yellow-400 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition"
           >
             <GraduationCap size={20} className="text-gray-900" />

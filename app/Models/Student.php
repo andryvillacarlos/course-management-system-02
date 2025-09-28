@@ -36,22 +36,23 @@ class Student extends Model
    
    protected static function booted() {
     
-    static::creating(function ($student) {
-        if (empty($student->id)) {
-            $student->id = (string) Str::uuid();
-        }
+        static::creating(function ($student) {
+            if (empty($student->id)) {
+                $student->id = (string) Str::uuid();
+            }
 
-        if (empty($student->student_id)) {
-            $year = now()->year;
-            $random = strtoupper(substr(Str::uuid(), 0, 6)); // e.g. A1B2C3
-            $student->student_id = $year . '-' . $random;
-        }
-    });
+            if (empty($student->student_id)) {
+                $year = now()->year;
+                $random = strtoupper(substr(Str::uuid(), 0, 6)); // e.g. A1B2C3
+                $student->student_id = $year . '-' . $random;
+            }
+        });
    }
 
   public function setPasswordAttribute($value) {
-        $this->attributes['password'] = bcrypt($value);
-}
+        
+      $this->attributes['password'] = bcrypt($value);
+  }
 
 
 }

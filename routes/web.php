@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -21,13 +22,15 @@ Route::get('/course',fn()=>inertia('Landing/CoursePage'))
 // Contact route
 Route::get('/contact',fn()=>inertia('Landing/ContactPage'))
           ->name('landing.contact');
+// Student Register
+Route::post('/store-student',[StudentController::class,'storeStudent'])
+          ->name('student.register');
 
 // <--- Admin Page Route --->
 Route::middleware(['auth','verified'])->group(function(){
    Route::get('/dashboard',fn()=>inertia('Dashboard'))
            ->name('admin.dashboard');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

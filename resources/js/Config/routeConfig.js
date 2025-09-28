@@ -6,4 +6,5 @@ export const landingRouteNames = {
     coursePage : 'landing.course',
     contactPage : 'landing.contact',
     loginPage : 'login',
+    registerPage : 'register',
 }

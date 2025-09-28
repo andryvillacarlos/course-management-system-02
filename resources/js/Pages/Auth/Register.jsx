@@ -1,5 +1,6 @@
 import LandingPageLayout from "@/Layouts/LandingPageLayout"
-import React, { useState } from "react"
+import React from "react"
+import { useForm } from "@inertiajs/react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/select"
 
 export default function Register() {
-  const [formData, setFormData] = useState({
+  const { data, setData, post, processing, errors, reset } = useForm({
     student_id: "",
     first_name: "",
     middle_name: "",
@@ -32,17 +33,11 @@ export default function Register() {
     password_confirmation: "",
   })
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    // TODO: connect to backend (API or Inertia)
+    post(route("student.register"), {
+      onSuccess: () => reset(),
+    })
   }
 
   return (
@@ -69,10 +64,13 @@ export default function Register() {
                 id="student_id"
                 name="student_id"
                 placeholder="e.g., 2025-00123"
-                value={formData.student_id}
-                onChange={handleChange}
+                value={data.student_id}
+                onChange={(e) => setData("student_id", e.target.value)}
                 required
               />
+              {errors.student_id && (
+                <p className="text-sm text-red-600">{errors.student_id}</p>
+              )}
             </div>
 
             {/* First Name */}
@@ -82,10 +80,13 @@ export default function Register() {
                 id="first_name"
                 name="first_name"
                 placeholder="John"
-                value={formData.first_name}
-                onChange={handleChange}
+                value={data.first_name}
+                onChange={(e) => setData("first_name", e.target.value)}
                 required
               />
+              {errors.first_name && (
+                <p className="text-sm text-red-600">{errors.first_name}</p>
+              )}
             </div>
 
             {/* Middle Name */}
@@ -95,9 +96,12 @@ export default function Register() {
                 id="middle_name"
                 name="middle_name"
                 placeholder="Optional"
-                value={formData.middle_name}
-                onChange={handleChange}
+                value={data.middle_name}
+                onChange={(e) => setData("middle_name", e.target.value)}
               />
+              {errors.middle_name && (
+                <p className="text-sm text-red-600">{errors.middle_name}</p>
+              )}
             </div>
 
             {/* Last Name */}
@@ -107,10 +111,13 @@ export default function Register() {
                 id="last_name"
                 name="last_name"
                 placeholder="Doe"
-                value={formData.last_name}
-                onChange={handleChange}
+                value={data.last_name}
+                onChange={(e) => setData("last_name", e.target.value)}
                 required
               />
+              {errors.last_name && (
+                <p className="text-sm text-red-600">{errors.last_name}</p>
+              )}
             </div>
 
             {/* Date of Birth */}
@@ -120,19 +127,21 @@ export default function Register() {
                 id="date_of_birth"
                 type="date"
                 name="date_of_birth"
-                value={formData.date_of_birth}
-                onChange={handleChange}
+                value={data.date_of_birth}
+                onChange={(e) => setData("date_of_birth", e.target.value)}
                 required
               />
+              {errors.date_of_birth && (
+                <p className="text-sm text-red-600">{errors.date_of_birth}</p>
+              )}
             </div>
 
             {/* Gender */}
             <div>
               <Label>Gender</Label>
               <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, gender: value })
-                }
+                onValueChange={(value) => setData("gender", value)}
+                value={data.gender}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -142,6 +151,9 @@ export default function Register() {
                   <SelectItem value="female">Female</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.gender && (
+                <p className="text-sm text-red-600">{errors.gender}</p>
+              )}
             </div>
 
             {/* Nationality */}
@@ -151,9 +163,12 @@ export default function Register() {
                 id="nationality"
                 name="nationality"
                 placeholder="Filipino"
-                value={formData.nationality}
-                onChange={handleChange}
+                value={data.nationality}
+                onChange={(e) => setData("nationality", e.target.value)}
               />
+              {errors.nationality && (
+                <p className="text-sm text-red-600">{errors.nationality}</p>
+              )}
             </div>
 
             {/* Email */}
@@ -164,10 +179,13 @@ export default function Register() {
                 type="email"
                 name="email"
                 placeholder="example@email.com"
-                value={formData.email}
-                onChange={handleChange}
+                value={data.email}
+                onChange={(e) => setData("email", e.target.value)}
                 required
               />
+              {errors.email && (
+                <p className="text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
 
             {/* Phone */}
@@ -177,10 +195,12 @@ export default function Register() {
                 id="phone"
                 name="phone"
                 placeholder="0912-345-6789"
-                value={formData.phone}
-                onChange={handleChange}
-                required
+                value={data.phone}
+                onChange={(e) => setData("phone", e.target.value)}
               />
+              {errors.phone && (
+                <p className="text-sm text-red-600">{errors.phone}</p>
+              )}
             </div>
 
             {/* Address */}
@@ -190,10 +210,13 @@ export default function Register() {
                 id="address"
                 name="address"
                 placeholder="Street, City, Province"
-                value={formData.address}
-                onChange={handleChange}
+                value={data.address}
+                onChange={(e) => setData("address", e.target.value)}
                 required
               />
+              {errors.address && (
+                <p className="text-sm text-red-600">{errors.address}</p>
+              )}
             </div>
 
             {/* Guardian Name */}
@@ -202,10 +225,13 @@ export default function Register() {
               <Input
                 id="guardian_name"
                 name="guardian_name"
-                value={formData.guardian_name}
-                onChange={handleChange}
+                value={data.guardian_name}
+                onChange={(e) => setData("guardian_name", e.target.value)}
                 required
               />
+              {errors.guardian_name && (
+                <p className="text-sm text-red-600">{errors.guardian_name}</p>
+              )}
             </div>
 
             {/* Guardian Contact */}
@@ -214,19 +240,21 @@ export default function Register() {
               <Input
                 id="guardian_contact"
                 name="guardian_contact"
-                value={formData.guardian_contact}
-                onChange={handleChange}
+                value={data.guardian_contact}
+                onChange={(e) => setData("guardian_contact", e.target.value)}
                 required
               />
+              {errors.guardian_contact && (
+                <p className="text-sm text-red-600">{errors.guardian_contact}</p>
+              )}
             </div>
 
             {/* Course */}
             <div>
               <Label>Course</Label>
               <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, course: value })
-                }
+                onValueChange={(value) => setData("course", value)}
+                value={data.course}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select course" />
@@ -250,15 +278,17 @@ export default function Register() {
                   </SelectItem>
                 </SelectContent>
               </Select>
+              {errors.course && (
+                <p className="text-sm text-red-600">{errors.course}</p>
+              )}
             </div>
 
             {/* Year Level */}
             <div>
               <Label>Year Level</Label>
               <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, year_level: value })
-                }
+                onValueChange={(value) => setData("year_level", value)}
+                value={data.year_level}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select year" />
@@ -270,15 +300,17 @@ export default function Register() {
                   <SelectItem value="4">4th Year</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.year_level && (
+                <p className="text-sm text-red-600">{errors.year_level}</p>
+              )}
             </div>
 
             {/* Status */}
             <div>
               <Label>Status</Label>
               <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, status: value })
-                }
+                onValueChange={(value) => setData("status", value)}
+                value={data.status}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
@@ -289,6 +321,9 @@ export default function Register() {
                   <SelectItem value="transferee">Transferee</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.status && (
+                <p className="text-sm text-red-600">{errors.status}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -298,10 +333,13 @@ export default function Register() {
                 id="password"
                 type="password"
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
+                value={data.password}
+                onChange={(e) => setData("password", e.target.value)}
                 required
               />
+              {errors.password && (
+                <p className="text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password */}
@@ -311,16 +349,21 @@ export default function Register() {
                 id="password_confirmation"
                 type="password"
                 name="password_confirmation"
-                value={formData.password_confirmation}
-                onChange={handleChange}
+                value={data.password_confirmation}
+                onChange={(e) => setData("password_confirmation", e.target.value)}
                 required
               />
+              {errors.password_confirmation && (
+                <p className="text-sm text-red-600">
+                  {errors.password_confirmation}
+                </p>
+              )}
             </div>
 
             {/* Submit */}
             <div className="md:col-span-2 flex justify-end mt-4">
-              <Button type="submit" className="px-8">
-                Register
+              <Button type="submit" className="px-8" disabled={processing}>
+                {processing ? "Registering..." : "Register"}
               </Button>
             </div>
           </form>
