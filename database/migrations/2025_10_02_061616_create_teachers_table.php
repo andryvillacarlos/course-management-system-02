@@ -11,27 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
-            
+       Schema::create('teachers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('student_id')->index();
+            $table->string('teacher_id')->unique()->index();   // indexed + unique
             $table->string('first_name')->index();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->index();
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->string('gender')->default('male');
             $table->string('nationality')->nullable();
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('address');
-            $table->string('guardian_name');
-            $table->string('guardian_contact');
-            $table->string('course');
-            $table->string('year_level');
-            $table->string('status')->default('regular');
+            $table->string('email')->unique()->index();       // indexed + unique
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('department')->index();            // useful for filtering by dept
+            $table->json('courses')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('status')->default('active');
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('teachers');
     }
 };

@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\StudentFactory> */
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public $keyType = 'string';
     public $incrementing = false;
@@ -33,7 +36,12 @@ class Student extends Model
         'password'
 
     ];
-   
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ]
+   ;
    protected static function booted() {
     
         static::creating(function ($student) {
@@ -50,8 +58,7 @@ class Student extends Model
    }
 
   public function setPasswordAttribute($value) {
-        
-      $this->attributes['password'] = bcrypt($value);
+     $this->attributes['password'] = bcrypt($value);
   }
 
 

@@ -3,6 +3,7 @@ import React from "react";
 import { GraduationCap } from "lucide-react";
 import { motion } from "framer-motion"; // animation
 import { landingRouteNames } from "@/Config/routeConfig";
+
 const HeroSection = () => {
   return (
     <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
