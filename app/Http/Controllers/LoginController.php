@@ -7,31 +7,46 @@ use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    public function login(LoginRequest $request) : RedirectResponse
+ 
+  public function login(LoginRequest $request): RedirectResponse
     {
-      $email = $request->input('email');
+        $email = $request->input('email');
 
-if (Teacher::where('email', $email)->exists()) {
-    $guard = 'teacher';
-} elseif (Student::where('email', $email)->exists()) {
-    $guard = 'student';
-} else {
-    $guard = 'web';
-}
+        // Determine which guard to use
+        $guard = match(true) {
+            Teacher::where('email', $email)->exists() => 'teacher',
+            Student::where('email', $email)->exists() => 'student',
+            default => 'web',
+        };
 
-$request->authenticate($guard);
-$request->session()->regenerate();
+        try {
+            // Authenticate user with the correct guard
+            $request->authenticate($guard);
+            $request->session()->regenerate();
 
-$dashboardRoute = match($guard) {
-    'student' => route('student.dashboard'),
-    'teacher' => route('teacher.dashboard'),
-    default => route('landing.about'),
-};
+            // Redirect based on guard
+            $dashboardRoute = match($guard) {
+                'teacher' => route('teacher.dashboard'),
+                'student' => route('student.dashboard'),
+                default => route('landing.about'),
+            };
 
-return redirect()->intended($dashboardRoute);
+            return redirect()->intended($dashboardRoute);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::warning('Failed login attempt', [
+                'email' => $email,
+                'guard' => $guard,
+            ]);
+
+            return back()->withErrors([
+                'email' => 'Invalid credentials.',
+            ])->withInput($request->only('email'));
+        }
     }
 }
