@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Admin;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\RedirectResponse;
@@ -21,6 +22,7 @@ class LoginController extends Controller
         $guard = match(true) {
             Teacher::where('email', $email)->exists() => 'teacher',
             Student::where('email', $email)->exists() => 'student',
+            Admin::where('email', $email)->exists() => 'admin',
             default => 'web',
         };
 
@@ -32,7 +34,8 @@ class LoginController extends Controller
             // Redirect based on guard
             $dashboardRoute = match($guard) {
                 'teacher' => route('teacher.dashboard'),
-                'student' => route('student.dashboard'),
+                'student' => route('dashboard'),
+                'admin' => route('admin.dashboard'),
                 default => route('landing.about'),
             };
 

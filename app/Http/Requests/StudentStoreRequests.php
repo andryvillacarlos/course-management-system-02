@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UniqueEmailsAcrossTable;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StudentStoreRequests extends FormRequest
@@ -19,38 +20,44 @@ class StudentStoreRequests extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array {
-        return [
-            // Core student info
-            'student_id'      => 'required|string|unique:students,student_id|max:50',
-            'first_name'      => 'required|string|max:100',
-            'middle_name'     => 'nullable|string|max:100',
-            'last_name'       => 'required|string|max:100',
+   public function rules(): array {
+    
+    return [
+        // Core student info
+        'student_id' => 'nullable|string|unique:students,student_id|max:50',
+        'first_name'      => 'required|string|max:100',
+        'middle_name'     => 'nullable|string|max:100',
+        'last_name'       => 'required|string|max:100',
 
-            // Personal info
-            'date_of_birth'   => 'required|date|before:today',
-            'gender'          => 'required|string|in:male,female',
-            'nationality'     => 'nullable|string|max:100',
+        // Personal info
+        'date_of_birth'   => 'required|date|before:today',
+        'gender'          => 'required|string|in:male,female',
+        'nationality'     => 'nullable|string|max:100',
 
-            // Contact info
-            'email'           => 'required|email|unique:students,email|max:150',
-            'phone'           => 'nullable|string|max:20',
-            'address'         => 'required|string|max:255',
+        // Contact info
+        'email'           => [
+            'required',
+            'email',
+            'unique:students,email',
+            'max:150',
+            new UniqueEmailsAcrossTable,
+        ],
+        'phone'           => 'required|string|max:20',
+        'address'         => 'required|string|max:255',
 
-            // Guardian info
-            'guardian_name'   => 'required|string|max:150',
-            'guardian_contact'=> 'required|string|max:20',
+        // Guardian info
+        'guardian_name'   => 'required|string|max:150',
+        'guardian_contact'=> 'required|string|max:20',
 
-            // Academic info
-            'course'          => 'required|string|max:150',
-            'year_level'      => 'required|string|max:10',
-            'status'          => 'required|string|in:regular,irregular,transferee',
+        // Academic info
+        'course'          => 'required|string|max:150',
+        'year_level'      => 'required|string|max:10',
+        'status'          => 'required|string|in:regular,irregular,transferee',
 
-            // Authentication
-            'password'        => 'required|string|min:8|confirmed',
-            
-        ];
-    }
+        // Authentication
+        'password'        => 'required|string|min:8|confirmed',
+    ];
+}
 
   
     public function messages(): array

@@ -17,15 +17,16 @@ class Student extends Authenticatable
     public $keyType = 'string';
     public $incrementing = false;
 
+   
     protected $fillable = [
         'student_id',
         'first_name',
         'middle_name',
         'last_name',
+        'email',
         'date_of_birth',
         'gender',
         'nationality',
-        'email',
         'phone',
         'address',
         'guardian_name',
@@ -33,9 +34,9 @@ class Student extends Authenticatable
         'course',
         'year_level',
         'status',
-        'password'
-
+        'password',
     ];
+
 
     protected $hidden = [
         'password',

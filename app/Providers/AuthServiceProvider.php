@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -21,5 +22,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('access-student', fn($user) => $user instanceof Student);
         Gate::define('access-teacher', fn($user) => $user instanceof Teacher);
         Gate::define('access-web', fn($user) => $user instanceof User);
+        Gate::define('access-admin',fn($user) => $user instanceof Admin);
     }
 }

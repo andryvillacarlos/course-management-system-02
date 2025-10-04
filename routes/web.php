@@ -21,34 +21,7 @@ Route::get('/course',fn()=>inertia('Landing/CoursePage'))->name('landing.course'
 
 Route::get('/contact',fn()=>inertia('Landing/ContactPage')) ->name('landing.contact');
 
-// --------------- Authentication Routes ---------------
 
-Route::post('/store-student',[StudentController::class,'storeStudent'])->name('student.register');
-
-Route::post('/login-user',[LoginController::class,'login'])
-          ->name('user.login');
-
-// --------------- Student Page Routes ---------------
-
-Route::prefix('student')
-    ->middleware([
-        'auth:student',
-        \App\Http\Middleware\CheckGuardAbility::class . ':student,access-student'
-    ])
-    ->group(function () {
-        Route::get('/dashboard', fn() => inertia('Dashboard'))->name('dashboard');
-    });
-
-Route::prefix('teacher')
-    ->middleware([
-        'auth:teacher',
-        \App\Http\Middleware\CheckGuardAbility::class . ':teacher,access-teacher'
-    ])
-    ->group(function () {
-        Route::get('/dashboard', fn() => inertia('TeacherDashboard'))->name('teacher.dashboard');
-    });
-
- 
 // --------------- Profile Page Routes ---------------
 
 Route::middleware('auth')->group(function () {
@@ -61,3 +34,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/student.php';
+require __DIR__.'/admin.php';
+require __DIR__.'/teacher.php';

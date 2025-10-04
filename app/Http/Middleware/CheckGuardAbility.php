@@ -22,6 +22,7 @@ class CheckGuardAbility
             'access-student' => $user instanceof \App\Models\Student,
             'access-teacher' => $user instanceof \App\Models\Teacher,
             'access-web' => $user instanceof \App\Models\User,
+            'access-admin' => $user instanceof \App\Models\Admin,
             default => false,
         };
 
