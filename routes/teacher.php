@@ -7,5 +7,7 @@ Route::prefix('teacher')
         \App\Http\Middleware\CheckGuardAbility::class . ':teacher,access-teacher'
     ])
     ->group(function () {
-        Route::get('/dashboard', fn() => inertia('TeacherDashboard'))->name('teacher.dashboard');
+
+        Route::get('/dashboard', fn() => inertia('Teacher/Home/TeacherHomePage'))->name('teacher.dashboard');
+        
     });

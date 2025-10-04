@@ -7,5 +7,7 @@ Route::prefix('admin')
         \App\Http\Middleware\CheckGuardAbility::class . ':admin,access-admin'
       ])
       ->group(function () {
-        Route::get('/dashboard',fn() => inertia('AdminPage'))->name('admin.dashboard');
+
+        Route::get('/dashboard',fn() => inertia('Admin/Dashboard/AdminDashboard'))->name('admin.dashboard');
+        
       });
