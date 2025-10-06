@@ -1,10 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\CheckGuardAbility;
 Route::prefix('teacher')
     ->middleware([
         'auth:teacher',
-        \App\Http\Middleware\CheckGuardAbility::class . ':teacher,access-teacher'
+        CheckGuardAbility::class . ':teacher,access-teacher'
     ])
     ->group(function () {
 

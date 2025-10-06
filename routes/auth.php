@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\RedirectIfAuthenticatedSession;
 
     Route::get('register', [RegisteredUserController::class, 'create'])
          ->name('register');
@@ -20,7 +21,7 @@ use App\Http\Controllers\StudentController;
         ->name('student.register');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+        ->name('login')->middleware([RedirectIfAuthenticatedSession::class]);
 
    Route::post('/login-user',[LoginController::class,'login'])
           ->name('user.login');

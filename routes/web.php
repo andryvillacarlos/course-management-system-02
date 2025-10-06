@@ -3,12 +3,14 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\RedirectIfAuthenticatedSession;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 
 // Root Route
-Route::get('/',fn()=>inertia('Landing/LandingPage'));
+Route::get('/',fn()=>inertia('Landing/LandingPage'))
+    ->middleware([RedirectIfAuthenticatedSession::class]);
 
 
 // --------------- Landing page routes ---------------
@@ -32,6 +34,20 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/debug-session', function () {
+    return session()->all();
+});
+
+Route::get('/check-auth', function () {
+    return [
+        'student_check' => Auth::guard('student')->check(),
+        'student_user' => Auth::guard('student')->user(),
+        'session' => session()->all(),
+    ];
+});
+
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/student.php';
