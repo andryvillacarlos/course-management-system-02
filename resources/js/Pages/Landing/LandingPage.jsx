@@ -4,19 +4,21 @@ import KeyFeatures from "./partial/KeyFeauteres";
 import AboutSection from "./partial/AboutSection";
 import HowItWorks from "./partial/HowItWorks";
 import WelcomeMessage from "./partial/WelcomeMessage";
-const LandingPage = () => {
+
+function LandingPage(){
   return(
     <>
-     <LandingPageLayout>
+     <>
       <HeroSection/>
       <KeyFeatures/>
       <AboutSection/>
       <HowItWorks/>
       <WelcomeMessage/>
-     </LandingPageLayout>
+     </>
     </>
   );
 }
 
+LandingPage.layout = (page) => <LandingPageLayout children={page}/>
 
 export default LandingPage;

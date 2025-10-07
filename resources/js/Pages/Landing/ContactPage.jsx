@@ -2,9 +2,9 @@ import LandingPageLayout from "@/Layouts/LandingPageLayout";
 import React from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 
-const ContactPage = () => {
+function ContactPage(){
   return (
-    <LandingPageLayout>
+      <>
       {/* Hero Section */}
       <section className="bg-blue-50 py-16 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Contact Us</h1>
@@ -87,8 +87,10 @@ const ContactPage = () => {
           </form>
         </div>
       </section>
-    </LandingPageLayout>
+     </>
   );
 };
+
+ContactPage.layout = (page) => <LandingPageLayout children={page}/>
 
 export default ContactPage;

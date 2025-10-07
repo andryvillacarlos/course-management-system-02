@@ -5,9 +5,9 @@ import { Book,Users } from "lucide-react";
 import { landingRouteNames } from "@/Config/routeConfig";
 import { Link } from "@inertiajs/react";
 
-const AboutPage = () => {
+function AboutPage(){
   return (
-    <LandingPageLayout>
+    <>
       <section className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6 text-center">
           {/* Hero Heading */}
@@ -109,8 +109,10 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
-    </LandingPageLayout>
+    </>
   );
 };
+
+AboutPage.layout = (page) => <LandingPageLayout children={page}/>
 
 export default AboutPage;

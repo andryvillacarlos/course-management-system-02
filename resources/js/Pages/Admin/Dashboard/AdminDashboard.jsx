@@ -7,9 +7,9 @@ import EnrollmentTrends from '@/Components/Admin/partial/Dashboard/EnrollmentTre
 import TeacherPerformance from '@/Components/Admin/partial/Dashboard/TeacherPerformance';
 
 
-export default function AdminDashboard() {
+ function AdminDashboard() {
   return (
-    <MainAdminLayout>
+
       <div className="p-6 space-y-8">
         {/* Dashboard overview section */}
         <section>
@@ -36,6 +36,10 @@ export default function AdminDashboard() {
           <TeacherPerformance/>
         </section>
       </div>
-    </MainAdminLayout>
+ 
   );
 } 
+
+AdminDashboard.layout = (page) => <MainAdminLayout children={page}/>
+
+export default AdminDashboard;

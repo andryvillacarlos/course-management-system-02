@@ -47,9 +47,9 @@ const courses = [
   },
 ];
 
-const CoursePage = () => {
+function CoursePage(){
   return (
-    <LandingPageLayout>
+    <>
       {/* Hero Section */}
       <section className="bg-blue-50 py-16 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">College Programs</h1>
@@ -79,8 +79,9 @@ const CoursePage = () => {
           </div>
         ))}
       </section>
-    </LandingPageLayout>
+    </>
   );
 };
 
+CoursePage.layout = (page) => <LandingPageLayout children={page}/>
 export default CoursePage;
