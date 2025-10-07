@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 
-export default function Login() {
+
+function Login() {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: "",
     password: "",
@@ -20,7 +21,7 @@ export default function Login() {
   }
 
   return (
-    <LandingPageLayout>
+    <>
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10">
           {/* Header */}
@@ -43,7 +44,9 @@ export default function Login() {
                 placeholder="example@email.com"
                 value={data.email}
                 onChange={(e) => setData("email", e.target.value)}
+                disabled = {processing}
                 required
+
               />
               {errors.email && (
                 <p className="text-sm text-red-600">{errors.email}</p>
@@ -60,6 +63,7 @@ export default function Login() {
                 placeholder="********"
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}
+                disabled={processing}
                 required
               />
               {errors.password && (
@@ -82,9 +86,22 @@ export default function Login() {
             </div>
 
             {/* Submit */}
-            <Button type="submit" className="w-full" disabled={processing}>
-              {processing ? "Logging in..." : "Login"}
-            </Button>
+         <Button
+            type="submit"
+            variant="blue"
+            className="w-full flex items-center justify-center"
+            disabled={processing}
+          >
+            {processing ? (
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 border-2 border-white border-b-transparent rounded-full animate-spin"></span>
+              
+              </div>
+            ) : (
+              "Login"
+            )}
+         </Button>
+
           </form>
 
           {/* Extra Links */}
@@ -109,6 +126,10 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </LandingPageLayout>
+    </>
   )
 }
+
+Login.layout = (page) => <LandingPageLayout children={page}/> 
+
+export default Login;

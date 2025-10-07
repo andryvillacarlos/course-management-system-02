@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export default function Register() {
+function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     student_id: "",
     first_name: "",
@@ -41,7 +41,7 @@ export default function Register() {
   }
 
   return (
-    <LandingPageLayout>
+    <>
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="w-full max-w-4xl rounded-2xl p-10">
           {/* Header */}
@@ -67,6 +67,7 @@ export default function Register() {
                 value={data.student_id}
                 onChange={(e) => setData("student_id", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.student_id && (
                 <p className="text-sm text-red-600">{errors.student_id}</p>
@@ -83,6 +84,7 @@ export default function Register() {
                 value={data.first_name}
                 onChange={(e) => setData("first_name", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.first_name && (
                 <p className="text-sm text-red-600">{errors.first_name}</p>
@@ -98,6 +100,7 @@ export default function Register() {
                 placeholder="Optional"
                 value={data.middle_name}
                 onChange={(e) => setData("middle_name", e.target.value)}
+                disabled={processing}
               />
               {errors.middle_name && (
                 <p className="text-sm text-red-600">{errors.middle_name}</p>
@@ -114,6 +117,7 @@ export default function Register() {
                 value={data.last_name}
                 onChange={(e) => setData("last_name", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.last_name && (
                 <p className="text-sm text-red-600">{errors.last_name}</p>
@@ -130,6 +134,7 @@ export default function Register() {
                 value={data.date_of_birth}
                 onChange={(e) => setData("date_of_birth", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.date_of_birth && (
                 <p className="text-sm text-red-600">{errors.date_of_birth}</p>
@@ -142,6 +147,7 @@ export default function Register() {
               <Select
                 onValueChange={(value) => setData("gender", value)}
                 value={data.gender}
+                disabled={processing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -165,6 +171,7 @@ export default function Register() {
                 placeholder="Filipino"
                 value={data.nationality}
                 onChange={(e) => setData("nationality", e.target.value)}
+                disabled={processing}
               />
               {errors.nationality && (
                 <p className="text-sm text-red-600">{errors.nationality}</p>
@@ -182,6 +189,7 @@ export default function Register() {
                 value={data.email}
                 onChange={(e) => setData("email", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.email && (
                 <p className="text-sm text-red-600">{errors.email}</p>
@@ -197,6 +205,7 @@ export default function Register() {
                 placeholder="0912-345-6789"
                 value={data.phone}
                 onChange={(e) => setData("phone", e.target.value)}
+                disabled={processing}
               />
               {errors.phone && (
                 <p className="text-sm text-red-600">{errors.phone}</p>
@@ -213,6 +222,7 @@ export default function Register() {
                 value={data.address}
                 onChange={(e) => setData("address", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.address && (
                 <p className="text-sm text-red-600">{errors.address}</p>
@@ -228,6 +238,7 @@ export default function Register() {
                 value={data.guardian_name}
                 onChange={(e) => setData("guardian_name", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.guardian_name && (
                 <p className="text-sm text-red-600">{errors.guardian_name}</p>
@@ -243,6 +254,7 @@ export default function Register() {
                 value={data.guardian_contact}
                 onChange={(e) => setData("guardian_contact", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.guardian_contact && (
                 <p className="text-sm text-red-600">{errors.guardian_contact}</p>
@@ -255,6 +267,7 @@ export default function Register() {
               <Select
                 onValueChange={(value) => setData("course", value)}
                 value={data.course}
+                disabled={processing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select course" />
@@ -289,6 +302,7 @@ export default function Register() {
               <Select
                 onValueChange={(value) => setData("year_level", value)}
                 value={data.year_level}
+                disabled={processing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select year" />
@@ -311,6 +325,7 @@ export default function Register() {
               <Select
                 onValueChange={(value) => setData("status", value)}
                 value={data.status}
+                disabled={processing}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
@@ -336,6 +351,7 @@ export default function Register() {
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}
                 required
+                disabled={processing}
               />
               {errors.password && (
                 <p className="text-sm text-red-600">{errors.password}</p>
@@ -350,8 +366,11 @@ export default function Register() {
                 type="password"
                 name="password_confirmation"
                 value={data.password_confirmation}
-                onChange={(e) => setData("password_confirmation", e.target.value)}
+                onChange={(e) =>
+                  setData("password_confirmation", e.target.value)
+                }
                 required
+                disabled={processing}
               />
               {errors.password_confirmation && (
                 <p className="text-sm text-red-600">
@@ -369,6 +388,10 @@ export default function Register() {
           </form>
         </div>
       </div>
-    </LandingPageLayout>
+    </>
   )
 }
+
+Register.layout = (page) => <LandingPageLayout children={page}/>
+
+export default Register;
