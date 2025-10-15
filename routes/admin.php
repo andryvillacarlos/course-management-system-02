@@ -14,5 +14,6 @@ Route::prefix('admin')
 
         Route::get('/dashboard',fn() => inertia('Admin/Dashboard/AdminDashboard'))->name('admin.dashboard');
         Route::get('/teachers-list',[TeacherManagementController::class,'showTeacherTableData'])->name('teacher.data');
-        
+        Route::get('/teacher-create',fn() => inertia('Admin/UserManagement/CreateTeacher'))->name('teacher.form');
+        Route::post('/teacher-store',[TeacherManagementController::class,'storeTeacher'])->name('store.teacher');
       });
