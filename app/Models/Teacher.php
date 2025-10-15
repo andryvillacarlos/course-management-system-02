@@ -14,6 +14,10 @@ class Teacher extends Authenticatable
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $casts = [
+        'courses' => 'array'
+    ];
+
     protected $fillable = [
     'teacher_id',
     'first_name',
@@ -55,5 +59,7 @@ class Teacher extends Authenticatable
  public function setPasswordAttribute($value) {
      $this->attributes['password'] = bcrypt($value);
  }
+
+
 
 }
