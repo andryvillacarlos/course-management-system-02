@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Search, ArrowLeft } from "lucide-react";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 
 export default function TeacherTableHeader() {
   const { props } = usePage();
@@ -126,10 +126,11 @@ export default function TeacherTableHeader() {
             <SelectItem value="history">History</SelectItem>
           </SelectContent>
         </Select>
-
+        <Link href={route('teacher.form')}>
         <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white">
           <Plus size={16} /> Add Teacher
         </Button>
+        </Link>
       </div>
     </div>
   );

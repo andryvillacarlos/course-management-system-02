@@ -28,7 +28,7 @@ class TeacherResources extends JsonResource
             'phone'        => $this->phone,
             'address'      => $this->address,
             'department'   => $this->department,
-            'courses'      => $this->courses ? json_decode($this->courses) : [],
+            'courses'      => $this->courses ?? [],
             'designation'  => $this->designation,
             'status'       => $this->status,
             

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminSidebar from "@/Components/Admin/SideBar";
 import TopBar from "@/Components/Admin/TopBar";
-
+import { Toaster } from "sonner";
 const MainAdminLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -21,6 +21,7 @@ const MainAdminLayout = ({ children }) => {
         <main className="flex-1 overflow-auto p-6">
           {children}
         </main>
+        <Toaster position="left-bottom" richColors/>
       </div>
     </div>
   );
