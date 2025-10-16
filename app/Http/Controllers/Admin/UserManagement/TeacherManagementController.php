@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\TeacherUpdateRequest;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TeacherManagementController extends Controller
 {
@@ -101,8 +101,9 @@ class TeacherManagementController extends Controller
 
     }
 
-   public function updateTeacher(TeacherUpdateRequest $request, Teacher $teacher)
+   public function updateTeacher(TeacherUpdateRequest $request,$teacherId)
    {
+        $teacher = Teacher::where('teacher_id', $teacherId)->firstOrFail();
 
         $this->authorize('update', $teacher);
 
@@ -132,6 +133,41 @@ class TeacherManagementController extends Controller
                 ->withInput();
         }
   }
+
+  public function deleteTeacher($teacherId)
+  {
+    try {
+   
+        $teacher = Teacher::where('teacher_id',$teacherId);
+
+        $teacher->delete();
+
+        return redirect()
+            ->route('teacher.data')
+            ->with('success', 'Teacher deleted successfully!');
+    } 
+    catch (ModelNotFoundException $e) {
+        
+        return redirect()
+            ->back()
+            ->withErrors(['error' => 'Teacher not found.']);
+    } 
+    catch (QueryException $e) {
+        
+        Log::error('Database error while deleting teacher: ' . $e->getMessage());
+        return redirect()
+            ->back()
+            ->withErrors(['error' => 'Failed to delete teacher due to a database issue.']);
+    } 
+    catch (\Exception $e) {
+        
+        Log::error('Unexpected error while deleting teacher: ' . $e->getMessage());
+        return redirect()
+            ->back()
+            ->withErrors(['error' => 'An unexpected error occurred while deleting the teacher.']);
+    }
+}
+
 }
 
 

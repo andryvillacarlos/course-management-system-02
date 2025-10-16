@@ -16,4 +16,8 @@ Route::prefix('admin')
         Route::get('/teachers-list',[TeacherManagementController::class,'showTeacherTableData'])->name('teacher.data');
         Route::get('/teacher-create',fn() => inertia('Admin/UserManagement/CreateTeacher'))->name('teacher.form');
         Route::post('/teacher-store',[TeacherManagementController::class,'storeTeacher'])->name('store.teacher');
+        Route::get('/teachers/{teacherId}/edit',[TeacherManagementController::class,'editTeacherForm'])->name('edit.teacher');
+        Route::put('/teacher-update/{teacherId}',[TeacherManagementController::class,'updateTeacher'])->name('update.teacher');
+        Route::delete('/teacher-delete/{teacherId}',[TeacherManagementController::class,'deleteTeacher'])->name('delete.teacher');
+        
       });

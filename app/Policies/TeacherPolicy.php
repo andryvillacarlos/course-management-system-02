@@ -13,7 +13,7 @@ class TeacherPolicy
      */
     public function viewAny(Admin $admin): bool
     {
-        return auth('admin')->check();
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class TeacherPolicy
      */
     public function create(Admin $admin): bool
     {
-        return auth('admin')->check();
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class TeacherPolicy
      */
     public function update(Admin $admin, Teacher $teacher): bool
     {
-        return false;
+        return true;
     }
 
     /**

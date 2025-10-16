@@ -33,7 +33,7 @@ function EditTeacherForm({ teacher }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(data.teacher_id);
     put(route("update.teacher", data.teacher_id), {
       onSuccess: () => {
         toast.success("Teacher updated successfully!");

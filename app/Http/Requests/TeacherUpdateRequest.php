@@ -22,7 +22,8 @@ class TeacherUpdateRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('teachers', 'email')->ignore($this->teacher->id),
+                Rule::unique('teachers', 'email')->ignore($this->route('teacherId'), 'teacher_id'),
+
             ],
             'gender'        => ['required', 'in:male,female,other'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
