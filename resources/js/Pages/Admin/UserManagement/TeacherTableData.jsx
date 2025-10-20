@@ -4,6 +4,7 @@ import MainAdminLayout from "@/Layouts/Admin/MainAdminLayout";
 import { usePage } from "@inertiajs/react";
 
 function TeacherTableData() {
+    
     const {teacherDataList} = usePage().props;
   
     return <TeacherList teacherData={teacherDataList}/>

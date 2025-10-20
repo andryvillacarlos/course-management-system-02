@@ -40,8 +40,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
       icon: Users,
       sub: [
         { name: "Teacher", href: "/admin/teachers-list" },
-        { name: "Add Student", href: "/admin/users/add-student" },
-        { name: "Manage Users", href: "/admin/users/manage" },
+        { name: "Student", href: "/admin/student-list" },
       ],
     },
     {

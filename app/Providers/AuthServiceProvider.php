@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use App\Models\Admin;
-use App\Models\Student;
-use App\Models\Teacher;
+
 use App\Models\User;
-use App\Policies\TeacherPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-
+use App\Models\Teacher;
+use App\Models\Admin;
+use App\Models\Student;
+use App\Policies\Admin\UserManagementPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -17,7 +17,11 @@ class AuthServiceProvider extends ServiceProvider
      */
      
     protected $policies = [
-      Teacher::class => TeacherPolicy::class,
+      
+     Teacher::class => UserManagementPolicy::class,
+     Admin::class   => UserManagementPolicy::class,
+     Student::class => UserManagementPolicy::class,
+    
     ];
 
     public function boot(): void

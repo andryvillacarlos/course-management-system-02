@@ -45,7 +45,7 @@ export default function TopBar({ setMobileOpen }) {
               alt="Profile"
               className="w-9 h-9 rounded-full border-2 border-white shadow-sm"
             />
-            <span className="font-medium hidden md:block">{user.name}</span>
+            <span className="font-medium hidden md:block">{user?.name}</span>
             <ChevronDown size={18} className="hidden md:block" />
           </div>
 

@@ -13,6 +13,7 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  User2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -130,6 +131,13 @@ const handleDelete = (teacherId) => {
             >
               <Trash2 size={16} /> Delete
             </DropdownMenuItem>
+            <DropdownMenuItem
+            
+              className="flex items-center gap-2 text-blue-600 hover:bg-blue-50 cursor-pointer"
+            >
+              <User2 size={16} /> Info
+            </DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       ),

@@ -34,6 +34,7 @@ class Teacher extends Authenticatable
     'designation',
     'status',
     'password',
+    'profile_image',
    ];
 
    protected $hidden = [

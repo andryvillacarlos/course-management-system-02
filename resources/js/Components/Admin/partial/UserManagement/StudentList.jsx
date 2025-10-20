@@ -38,7 +38,7 @@ export default function StudentList({ studentData }) {
 
   // ✏️ Edit student
   const handleEdit = (studentId) => {
-    router.visit(route("edit.student", studentId), {
+    router.visit(route("edit.studentForm", studentId), {
       preserveScroll: true,
       preserveState: true,
     });

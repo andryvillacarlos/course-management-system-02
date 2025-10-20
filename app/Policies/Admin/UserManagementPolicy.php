@@ -51,8 +51,6 @@ class UserManagementPolicy
     {   
         if($user instanceof Admin) return true;
         
-        if($user instanceof Teacher && $model instanceof Student) return true;
-
         if($user instanceof Student && $user->is($model)) return true;
 
         return false;
@@ -61,24 +59,31 @@ class UserManagementPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Student $student, Admin $admin): bool
+    public function delete($user): bool
     {
+          
+        if($user instanceof Admin) return true;
+
         return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Student $student, Admin $admin): bool
+    public function restore($user): bool
     {
+        if($user instanceof Admin) return true;
+
         return false;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Student $student, Admin $admin): bool
+    public function forceDelete($user): bool
     {
-        return false;
+        if($user instanceof Admin) return true;
+        
+        return false ;
     }
 }

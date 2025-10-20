@@ -128,11 +128,7 @@ export default function StudentTableHeader() {
           </SelectContent>
         </Select>
 
-        <Link href={route("teacher.data")}>
-          <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white">
-            <Plus size={16} /> Add Student
-          </Button>
-        </Link>
+        
       </div>
     </div>
   );

@@ -11,14 +11,17 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\TeacherUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
+
 
 class TeacherManagementController extends Controller
 {
 
     public function showTeacherTableData(Request $request)
-    {
-        $this->authorize('viewAny', Teacher::class);
-
+    {   
+      
+        $this->authorize('viewAny',Teacher::class);
+        
         $search  = trim($request->input('search', ''));
         $filter  = trim($request->input('filter', ''));
 
@@ -28,7 +31,7 @@ class TeacherManagementController extends Controller
                     $q->where('teacher_id', 'like', "%{$search}%")
                       ->orWhere('first_name', 'like', "%{$search}%")
                       ->orWhere('last_name', 'like', "%{$search}%")
-                      ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"])
+                      ->whereRaw("(first_name || ' ' || last_name) LIKE ?", ["%{$search}%"])
                       ->orWhere('email', 'like', "%{$search}%");
                 });
             })
@@ -63,8 +66,17 @@ class TeacherManagementController extends Controller
         $this->authorize('create', Teacher::class);
 
         try {
+            // Validate request
             $validated = $request->validated();
 
+            // ✅ Handle profile upload if present
+            if ($request->hasFile('profile_image')) {
+                $file = $request->file('profile_image');
+                $filePath = $file->store('profiles', 'public'); // saves in storage/app/public/profiles
+                $validated['profile_image'] = $filePath;
+            }
+
+           // ✅ Create teacher record
             $teacher = Teacher::create($validated);
 
             return redirect()
@@ -101,38 +113,54 @@ class TeacherManagementController extends Controller
 
     }
 
-   public function updateTeacher(TeacherUpdateRequest $request,$teacherId)
-   {
-        $teacher = Teacher::where('teacher_id', $teacherId)->firstOrFail();
+public function updateTeacher(TeacherUpdateRequest $request, $teacherId)
+{
+    $teacher = Teacher::where('teacher_id', $teacherId)->firstOrFail();
 
-        $this->authorize('update', $teacher);
+    $this->authorize('update', $teacher);
 
-        try {
-            $validated = $request->validated();
+    try {
+        $validated = $request->validated();
 
-            $teacher->update($validated);
+        // ✅ Handle image only if uploaded
+        if ($request->hasFile('profile_image')) {
+            // Delete old file if it exists
+            if ($teacher->profile_image && Storage::disk('public')->exists($teacher->profile_image)) {
+                Storage::disk('public')->delete($teacher->profile_image);
+            }
 
-            return redirect()
-                ->route('teacher.data')
-                ->with('success', 'Teacher updated successfully!');
-        } 
-        catch (QueryException $e) {
-            
-            Log::error('Database error while updating teacher: ' . $e->getMessage());
-
-            return back()
-                ->withErrors(['error' => 'Failed to update teacher due to a database issue.'])
-                ->withInput();
-        } 
-        catch (\Exception $e) {
-            
-            Log::error('Unexpected error while updating teacher: ' . $e->getMessage());
-
-            return back()
-                ->withErrors(['error' => 'An unexpected error occurred while updating the teacher.'])
-                ->withInput();
+            // Store new image
+            $file = $request->file('profile_image');
+            $filePath = $file->store('profiles', 'public');
+            $validated['profile_image'] = $filePath;
+        } else {
+            // ✅ Prevent removing old image if not uploading new one
+            unset($validated['profile_image']);
         }
-  }
+
+        // ✅ Update all other data
+        $teacher->update($validated);
+
+        return redirect()
+            ->route('teacher.data')
+            ->with('success', 'Teacher updated successfully!');
+    } 
+    catch (QueryException $e) {
+        Log::error('Database error while updating teacher: ' . $e->getMessage());
+
+        return back()
+            ->withErrors(['error' => 'Failed to update teacher due to a database issue.'])
+            ->withInput();
+    } 
+    catch (\Exception $e) {
+        Log::error('Unexpected error while updating teacher: ' . $e->getMessage());
+
+        return back()
+            ->withErrors(['error' => 'An unexpected error occurred while updating the teacher.'])
+            ->withInput();
+    }
+}
+
 
   public function deleteTeacher($teacherId)
   {

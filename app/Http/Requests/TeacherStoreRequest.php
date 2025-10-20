@@ -45,6 +45,7 @@ class TeacherStoreRequest extends FormRequest
             'designation'   => 'nullable|string|max:150',
             'status'        => 'in:active,inactive',      // ensure valid status
             'password'      => 'required|string|min:8|confirmed', // must include password_confirmation field
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 

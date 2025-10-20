@@ -8,24 +8,22 @@ import { toast } from "sonner";
 import { ArrowLeft, Upload } from "lucide-react";
 import MainAdminLayout from "@/Layouts/Admin/MainAdminLayout";
 
-function EditTeacherForm({ teacher }) {
+function EditStudentForm({ student }) {
   const { errors } = usePage().props;
-  const [preview, setPreview] = useState(
-    teacher.profile ? `/storage/${teacher.profile}` : "/images/default-avatar.png"
-  );
+  const [preview, setPreview] = useState(student.profile || "/images/default-avatar.png");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     router.post(
-      route("update.teacher", teacher.id),
+      route("update.student", student.id),
       {
         _method: "put",
         ...Object.fromEntries(new FormData(e.target)),
       },
       {
         preserveScroll: true,
-        onSuccess: () => toast.success("Teacher updated successfully!"),
-        onError: () => toast.error("Failed to update teacher."),
+        onSuccess: () => toast.success("Student updated successfully!"),
+        onError: () => toast.error("Failed to update student."),
       }
     );
   };
@@ -42,13 +40,15 @@ function EditTeacherForm({ teacher }) {
       {/* Header */}
       <div className="flex items-center justify-between border-b pb-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Edit Teacher Profile</h1>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Edit Student Profile
+          </h1>
           <p className="text-sm text-gray-500">
-            Update the teacher’s personal and professional information.
+            Update the student’s academic and personal information.
           </p>
         </div>
         <Link
-          href={route("teacher.data")}
+          href={route("student.data")}
           className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium"
         >
           <ArrowLeft size={16} />
@@ -90,11 +90,11 @@ function EditTeacherForm({ teacher }) {
 
               <div className="text-center sm:text-left">
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  {teacher.first_name} {teacher.middle_name} {teacher.last_name}
+                  {student.first_name} {student.middle_name} {student.last_name}
                 </h2>
-                <p className="text-sm text-gray-500 mt-1">{teacher.email}</p>
+                <p className="text-sm text-gray-500 mt-1">{student.email}</p>
                 <p className="text-sm text-gray-500">
-                  {teacher.designation || "Faculty Member"} • {teacher.department}
+                  {student.course} • Year {student.year_level}
                 </p>
               </div>
             </section>
@@ -110,62 +110,36 @@ function EditTeacherForm({ teacher }) {
                   <Input
                     id="first_name"
                     name="first_name"
-                    defaultValue={teacher.first_name}
+                    defaultValue={student.first_name}
                     className={errors.first_name ? "border-red-500" : ""}
                   />
                   {errors.first_name && (
-                    <p className="text-red-500 text-xs mt-1">{errors.first_name}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.first_name}
+                    </p>
                   )}
                 </div>
-
                 <div>
                   <Label htmlFor="middle_name">Middle Name</Label>
                   <Input
                     id="middle_name"
                     name="middle_name"
-                    defaultValue={teacher.middle_name}
+                    defaultValue={student.middle_name}
                   />
                 </div>
-
                 <div>
                   <Label htmlFor="last_name">Last Name</Label>
                   <Input
                     id="last_name"
                     name="last_name"
-                    defaultValue={teacher.last_name}
+                    defaultValue={student.last_name}
                     className={errors.last_name ? "border-red-500" : ""}
                   />
                   {errors.last_name && (
-                    <p className="text-red-500 text-xs mt-1">{errors.last_name}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.last_name}
+                    </p>
                   )}
-                </div>
-
-                <div>
-                  <Label htmlFor="date_of_birth">Date of Birth</Label>
-                  <Input
-                    id="date_of_birth"
-                    name="date_of_birth"
-                    type="date"
-                    defaultValue={teacher.date_of_birth}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="gender">Gender</Label>
-                  <Input
-                    id="gender"
-                    name="gender"
-                    defaultValue={teacher.gender}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="nationality">Nationality</Label>
-                  <Input
-                    id="nationality"
-                    name="nationality"
-                    defaultValue={teacher.nationality}
-                  />
                 </div>
               </div>
             </section>
@@ -182,68 +156,52 @@ function EditTeacherForm({ teacher }) {
                     id="email"
                     name="email"
                     type="email"
-                    defaultValue={teacher.email}
+                    defaultValue={student.email}
                     className={errors.email ? "border-red-500" : ""}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email}
+                    </p>
                   )}
                 </div>
-
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    defaultValue={teacher.phone}
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Input
-                    id="address"
-                    name="address"
-                    defaultValue={teacher.address}
-                  />
-                </div>
-              </div>
-            </section>
-
-            {/* PROFESSIONAL INFORMATION */}
-            <section>
-              <h2 className="text-lg font-semibold text-gray-700 mb-4 border-l-4 border-indigo-500 pl-3">
-                Professional Details
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="department">Department</Label>
-                  <Input
-                    id="department"
-                    name="department"
-                    defaultValue={teacher.department}
-                    className={errors.department ? "border-red-500" : ""}
-                  />
-                  {errors.department && (
-                    <p className="text-red-500 text-xs mt-1">{errors.department}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="designation">Designation</Label>
-                  <Input
-                    id="designation"
-                    name="designation"
-                    defaultValue={teacher.designation}
-                  />
-                </div>
-
                 <div>
                   <Label htmlFor="status">Status</Label>
                   <Input
                     id="status"
                     name="status"
-                    defaultValue={teacher.status}
+                    defaultValue={student.status}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* ACADEMIC DETAILS */}
+            <section>
+              <h2 className="text-lg font-semibold text-gray-700 mb-4 border-l-4 border-indigo-500 pl-3">
+                Academic Details
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="course">Course</Label>
+                  <Input
+                    id="course"
+                    name="course"
+                    defaultValue={student.course}
+                    className={errors.course ? "border-red-500" : ""}
+                  />
+                  {errors.course && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.course}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="year_level">Year Level</Label>
+                  <Input
+                    id="year_level"
+                    name="year_level"
+                    defaultValue={student.year_level}
                   />
                 </div>
               </div>
@@ -265,6 +223,6 @@ function EditTeacherForm({ teacher }) {
   );
 }
 
-EditTeacherForm.layout = (page) => <MainAdminLayout children={page} />;
+EditStudentForm.layout = (page) => <MainAdminLayout children={page} />;
 
-export default EditTeacherForm;
+export default EditStudentForm;

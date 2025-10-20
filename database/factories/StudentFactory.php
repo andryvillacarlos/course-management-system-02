@@ -37,9 +37,15 @@ class StudentFactory extends Factory
             'guardian_name' => $this->faker->name(),
             'guardian_contact' => $this->faker->phoneNumber(),
             'course' => $this->faker->randomElement(['BSCS', 'BSIT', 'BSA', 'BSBA']),
+            'department' => $this->faker->randomElement([
+                'College of Computer Studies',
+                'College of Business Administration',
+                'College of Accountancy',
+                'College of Engineering',
+            ]),
             'year_level' => $this->faker->randomElement(['1', '2', '3', '4']),
             'status' => $this->faker->randomElement(['regular', 'irregular']),
-            'password' => bcrypt('password'), // default password
+            'password' => 'password', // default password
             'created_at' => now(),
             'updated_at' => now(),
         ];

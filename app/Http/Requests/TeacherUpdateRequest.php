@@ -15,6 +15,7 @@ class TeacherUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            
             'first_name'    => ['required', 'string', 'max:100'],
             'middle_name'   => ['nullable', 'string', 'max:100'],
             'last_name'     => ['required', 'string', 'max:100'],
@@ -29,8 +30,9 @@ class TeacherUpdateRequest extends FormRequest
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'nationality'   => ['nullable', 'string', 'max:100'],
             'department'    => ['nullable', 'string', 'max:100'],
-            'contact_number'=> ['nullable', 'string', 'regex:/^[0-9+\-\s()]+$/', 'max:20'],
+            'phone'=> ['nullable', 'string', 'regex:/^[0-9+\-\s()]+$/', 'max:20'],
             'address'       => ['nullable', 'string', 'max:255'],
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 
@@ -54,7 +56,7 @@ class TeacherUpdateRequest extends FormRequest
             'date_of_birth.before' => 'Date of birth must be in the past.',
 
             // ✅ Contact
-            'contact_number.regex' => 'The contact number format is invalid.',
+            'phone.regex' => 'The contact number format is invalid.',
         ];
     }
 }

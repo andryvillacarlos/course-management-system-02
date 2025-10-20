@@ -31,6 +31,7 @@ class TeacherResources extends JsonResource
             'courses'      => $this->courses ?? [],
             'designation'  => $this->designation,
             'status'       => $this->status,
+            'profile'      => $this->profile_image, 
             
         ];
     }

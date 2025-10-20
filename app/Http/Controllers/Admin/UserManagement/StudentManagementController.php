@@ -27,7 +27,7 @@ class StudentManagementController extends Controller
             });
         })
         ->when($filter && $filter !== 'all', fn($query) =>
-            $query->where('department', $filter)
+            $query->where('course', $filter)
         )
         ->latest('created_at')
         ->paginate(10)
@@ -46,6 +46,15 @@ class StudentManagementController extends Controller
             'per_page'     => $students->perPage(),
             'total'        => $students->total(),
         ],
+    ]);
+}
+
+public function editStudentForm($studentId){
+    
+    $student = Student::where('student_id',$studentId)->firstOrFail();
+
+    return inertia('Admin/UserManagement/EditStudentForm', [
+        'student' => $student,
     ]);
 }
 

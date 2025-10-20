@@ -42,6 +42,7 @@ class StudentStoreRequests extends FormRequest
             'max:150',
             new UniqueEmailsAcrossTable,
         ],
+      
         'phone'           => 'required|string|max:20',
         'address'         => 'required|string|max:255',
 

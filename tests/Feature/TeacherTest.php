@@ -38,6 +38,7 @@ test('it can filter teachers by department', function () {
              );
 });
 
+
 test('it can search teachers by name or email', function () {
     $teacher = Teacher::factory()->create([
         'first_name' => 'John',
@@ -91,4 +92,84 @@ test('admin can add a new teacher account', function () {
     // 🧠 Optional - ensure password was hashed
     $teacher = Teacher::where('email', 'john.doe@example.com')->first();
     expect($teacher->password)->not->toBe('password123');
+});
+
+
+test('it can show the edit teacher form', function () {
+    // 🧩 Arrange
+    $teacher = Teacher::factory()->create([
+        'teacher_id' => 'TCH-2001',
+        'department' => 'Science',
+    ]);
+
+    // 🧭 Act
+    $response = $this->get(route('edit.teacher', $teacher->teacher_id));
+
+    // ✅ Assert
+    $response->assertStatus(200)
+        ->assertInertia(fn ($page) =>
+            $page->component('Admin/UserManagement/EditTeacherForm')
+                 ->has('teacher')
+                 ->where('teacher.data.teacher_id', 'TCH-2001')
+                 ->where('teacher.data.department', 'Science')
+        );
+});
+
+test('it can update teacher data successfully', function () {
+    // 🧩 Arrange
+    $teacher = Teacher::factory()->create([
+        'teacher_id' => 'TCH-2002',
+        'first_name' => 'Jane',
+        'last_name'  => 'Doe',
+        'gender' => 'female',
+        'department' => 'Math',
+        'email' => 'jane.old@example.com',
+    ]);
+
+    $updateData = [
+        'first_name' => 'Janet',
+        'last_name'  => 'Smith', // ✅ Added
+        'gender' => 'female',    // ✅ Added
+        'department' => 'Science',
+        'email' => 'janet.new@example.com',
+        'phone' => '09999999999',
+        'address' => 'Cebu City',
+        'designation' => 'Professor',
+        'status' => 'active',
+    ];
+
+    // 🧭 Act
+    $response = $this->put(route('update.teacher', $teacher->teacher_id), $updateData);
+
+    // ✅ Assert
+    $response->assertRedirect(route('teacher.data'))
+             ->assertSessionHas('success', 'Teacher updated successfully!');
+
+    $this->assertDatabaseHas('teachers', [
+        'teacher_id' => 'TCH-2002',
+        'first_name' => 'Janet',
+        'last_name' => 'Smith',
+        'email' => 'janet.new@example.com',
+        'department' => 'Science',
+    ]);
+});
+
+
+test('it can delete a teacher successfully', function () {
+    // 🧩 Arrange
+    $teacher = Teacher::factory()->create([
+        'teacher_id' => 'TCH-2003',
+        'email' => 'delete.me@example.com',
+    ]);
+
+    // 🧭 Act
+    $response = $this->delete(route('delete.teacher', $teacher->teacher_id));
+
+    // ✅ Assert
+    $response->assertRedirect(route('teacher.data'))
+             ->assertSessionHas('success', 'Teacher deleted successfully!');
+
+    $this->assertDatabaseMissing('teachers', [
+        'teacher_id' => 'TCH-2003',
+    ]);
 });

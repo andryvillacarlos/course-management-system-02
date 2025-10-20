@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AdminSidebar from "@/Components/Admin/SideBar";
 import TopBar from "@/Components/Admin/TopBar";
 import { Toaster } from "sonner";
+
 const MainAdminLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -10,19 +11,18 @@ const MainAdminLayout = ({ children }) => {
       {/* Sidebar */}
       <AdminSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Main Area */}
+      <div className="flex flex-col flex-1 min-h-0">
         {/* Top Bar */}
-        <div className="flex-shrink-0">
-          <TopBar setMobileOpen={setMobileOpen} />
-        </div>
+        <TopBar setMobileOpen={setMobileOpen} />
 
-        {/* Scrollable Page Content */}
-        <main className="flex-1 overflow-auto p-6">
-          {children}
+        {/* Scrollable Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6 pb-20">{children}</div>
         </main>
-       <Toaster position="bottom-right" richColors duration={3000} />
 
+        {/* Toast Notifications */}
+        <Toaster position="bottom-right" richColors duration={3000} />
       </div>
     </div>
   );
